@@ -34,7 +34,7 @@ public class UseCompassEvent implements Listener {
                 .append(tag)
                 .append(Component.text("正在传送到磁石位置...").color(TextColor.fromHexString("#67ff7b")))
         );
-        event.getPlayer().teleportAsync(loc);
+        event.getPlayer().teleportAsync(loc.add(0.5, 1.5, 0.5));
         event.setCancelled(true);
     }
 }
