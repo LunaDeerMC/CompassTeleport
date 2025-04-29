@@ -19,6 +19,10 @@ public class UseCompassEvent implements Listener {
         if (loc == null) return;
         if (!meta.getPersistentDataContainer().has(CompassTeleport.key, org.bukkit.persistence.PersistentDataType.BOOLEAN))
             return;
+        if (!meta.isLodestoneTracked()) {
+            event.getPlayer().sendMessage("§b[指南针] §7此指南针未追踪磁石位置（已失效），无法传送！");
+            return;
+        }
         event.getPlayer().sendMessage("§b[指南针] §7正在传送到磁石位置...");
         event.getPlayer().teleportAsync(loc);
         event.setCancelled(true);
