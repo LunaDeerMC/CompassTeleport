@@ -15,6 +15,7 @@ public class UseCompassEvent implements Listener {
 
     @EventHandler
     public void onUseCompass(PlayerInteractEvent event) {
+        if (!event.getAction().isRightClick()) return;
         if (event.getItem() == null) return;
         if (event.getItem().getType() != org.bukkit.Material.COMPASS) return;
         CompassMeta meta = (CompassMeta) event.getItem().getItemMeta();
