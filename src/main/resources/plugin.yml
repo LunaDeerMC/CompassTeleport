@@ -3,3 +3,7 @@ version: '${project.version}'
 main: cn.lunadeer.compassTeleport.CompassTeleport
 api-version: '1.20'
 folia-supported: true
+permissions:
+  compassteleport.use:
+    description: 使用指南针传送
+    default: true
