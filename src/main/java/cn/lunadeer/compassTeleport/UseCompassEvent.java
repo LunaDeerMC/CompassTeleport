@@ -3,7 +3,6 @@ package cn.lunadeer.compassTeleport;
 import cn.lunadeer.compassTeleport.utils.scheduler.CancellableTask;
 import cn.lunadeer.compassTeleport.utils.scheduler.Scheduler;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -11,13 +10,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+
+import static cn.lunadeer.compassTeleport.CompassTeleport.tag;
+import static cn.lunadeer.compassTeleport.utils.Misc.getLocationFromString;
+import static cn.lunadeer.compassTeleport.utils.Misc.getLocationString;
 
 public class UseCompassEvent implements Listener {
 
-    private static final TextComponent tag = Component.text("[指南针] ", TextColor.fromHexString("#00c1ff"));
     private static final Map<UUID, Long> lastTeleportTime = new java.util.HashMap<>();
     private static final Map<UUID, CancellableTask> tpTasks = new java.util.HashMap<>();
 
@@ -37,15 +41,23 @@ public class UseCompassEvent implements Listener {
             );
             return;
         }
-        if (!meta.isLodestoneTracked() || !meta.hasLodestone()) {
+        if (!meta.isLodestoneTracked() || !meta.hasLodestone() || meta.getLodestone() == null) {
             event.getPlayer().sendMessage(Component.text()
                     .append(tag)
                     .append(Component.text("此指南针无法追踪磁石位置（已失效），无法传送！").color(TextColor.fromHexString("#ff76aa")))
             );
             return;
         }
-        Location loc = meta.getLodestone();
-        if (loc == null) return;
+        Location loc = getLocationFromString(Objects.requireNonNullElse(meta.getPersistentDataContainer().get(CompassTeleport.tp_location_key, PersistentDataType.STRING),
+                getLocationString(meta.getLodestone())), meta.getLodestone().getWorld());
+        if (loc == null) {
+            event.getPlayer().sendMessage(Component.text()
+                    .append(tag)
+                    .append(Component.text("此指南针无法追踪磁石位置（已失效），无法传送！").color(TextColor.fromHexString("#ff76aa")))
+            );
+            return;
+        }
+
         // cooldown
         if (lastTeleportTime.containsKey(event.getPlayer().getUniqueId()) &&
                 System.currentTimeMillis() - lastTeleportTime.get(event.getPlayer().getUniqueId()) < Configuration.cooldownSec * 1000L) {
@@ -75,7 +87,7 @@ public class UseCompassEvent implements Listener {
             );
         }
         CancellableTask t = Scheduler.runTaskLater(() -> {
-            event.getPlayer().teleportAsync(loc.add(0.5, 1.5, 0.5)).thenAccept(teleported -> {
+            event.getPlayer().teleportAsync(loc).thenAccept(teleported -> {
                 if (teleported) {
                     event.getPlayer().sendMessage(Component.text()
                             .append(tag)

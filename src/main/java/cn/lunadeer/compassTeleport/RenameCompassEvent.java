@@ -32,10 +32,10 @@ public class RenameCompassEvent implements Listener {
         lores.add(Component.text("[传送指南针]", TextColor.color(0, 217, 255)).decoration(TextDecoration.ITALIC, false));
         lores.add(Component.text("· ———————————", TextColor.color(27, 64, 127)).decoration(TextDecoration.ITALIC, false));
         lores.add(Component.text("· 手持此指南针右键", TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
-        lores.add(Component.text("· 可传送到磁石位置", TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
+        lores.add(Component.text("· 可传送到磁石附近", TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
         lores.add(Component.text("· ———————————", TextColor.color(27, 64, 127)).decoration(TextDecoration.ITALIC, false));
         lores.add(Component.text("· 世界：" + loc.getWorld().getName(), TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
-        lores.add(Component.text("· 坐标：", TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
+        lores.add(Component.text("· 磁石坐标：", TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
         lores.add(Component.text("·   # X: " + loc.getBlockX(), TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
         lores.add(Component.text("·   # Y: " + loc.getBlockY(), TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
         lores.add(Component.text("·   # Z: " + loc.getBlockZ(), TextColor.color(51, 133, 255)).decoration(TextDecoration.ITALIC, false));
@@ -48,5 +48,6 @@ public class RenameCompassEvent implements Listener {
         );
         result.setItemMeta(meta);
         event.setResult(result);
+        event.getView().setRepairCost(Configuration.costLevel);
     }
 }

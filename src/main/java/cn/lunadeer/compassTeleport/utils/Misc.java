@@ -1,5 +1,7 @@
 package cn.lunadeer.compassTeleport.utils;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -27,5 +29,22 @@ public class Misc {
             formatStr = formatStr.replace("{" + i + "}", args[i].toString());
         }
         return formatStr;
+    }
+
+    public static String getLocationString(Location location) {
+        return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+    }
+
+    public static Location getLocationFromString(String str, World world) {
+        String[] parts = str.split(",");
+        if (parts.length != 5) {
+            return null;
+        }
+        double x = Double.parseDouble(parts[0]);
+        double y = Double.parseDouble(parts[1]);
+        double z = Double.parseDouble(parts[2]);
+        float yaw = Float.parseFloat(parts[3]);
+        float pitch = Float.parseFloat(parts[4]);
+        return new Location(world, x, y, z, yaw, pitch);
     }
 }
