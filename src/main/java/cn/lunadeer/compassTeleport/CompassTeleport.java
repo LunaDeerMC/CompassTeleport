@@ -1,5 +1,6 @@
 package cn.lunadeer.compassTeleport;
 
+import cn.lunadeer.compassTeleport.utils.bStatsMetrics;
 import cn.lunadeer.compassTeleport.utils.configuration.ConfigurationManager;
 import cn.lunadeer.compassTeleport.utils.scheduler.Scheduler;
 import net.kyori.adventure.text.Component;
@@ -26,6 +27,7 @@ public final class CompassTeleport extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RenameCompassEvent(), this);
         getServer().getPluginManager().registerEvents(new UseCompassEvent(), this);
         getServer().getPluginManager().registerEvents(new BindLodestoneEvent(), this);
+        new bStatsMetrics(this, 26231);
     }
 
     @Override
