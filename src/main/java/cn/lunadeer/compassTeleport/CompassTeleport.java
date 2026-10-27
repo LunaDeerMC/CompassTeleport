@@ -25,6 +25,7 @@ public final class CompassTeleport extends JavaPlugin {
             return;
         }
         getServer().getPluginManager().registerEvents(new RenameCompassEvent(), this);
+        getServer().getPluginManager().registerEvents(new CopyCompassEvent(), this);
         getServer().getPluginManager().registerEvents(new UseCompassEvent(), this);
         getServer().getPluginManager().registerEvents(new BindLodestoneEvent(), this);
         new bStatsMetrics(this, 26231);
